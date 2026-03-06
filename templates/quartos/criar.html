@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block title %}Novo Quarto{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+    <div class="card-header bg-white">
+        <h4 class="mb-0">Cadastrar Quarto</h4>
+    </div>
+
+    <div class="card-body">
+
+        <form method="POST" novalidate>
+            {% csrf_token %}
+            <!-- teste -->
+            <div class="mb-3">
+                <label class="form-label">Empresa</label>
+                {{ form.empresa }}
+                {% if form.empresa.errors %}
+                    <div class="text-danger small">
+                        {{ form.empresa.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            <!-- teste -->
+            <div class="mb-3">
+                <label class="form-label">Numero</label>
+                {{ form.numero }}
+                {% if form.numero.errors %}
+                    <div class="text-danger small">
+                        {{ form.numero.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Tipo</label>
+                {{ form.tipo }}
+                {% if form.tipo.errors %}
+                    <div class="text-danger small">
+                        {{ form.tipo.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Valor da Hora</label>
+                {{ form.valor_hora }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Status</label>
+                {{ form.status }}
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Esta Ativo</label>
+                {{ form.esta_ativo }}
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'quartos:listar_quartos' %}" class="btn btn-secondary">
+                    Voltar
+                </a>
+
+                <button type="submit" class="btn btn-primary">
+                    Salvar
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

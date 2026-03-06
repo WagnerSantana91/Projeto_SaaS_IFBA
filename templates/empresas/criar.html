@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% block title %}Nova Empresa{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+    <div class="card-header bg-white">
+        <h4 class="mb-0">Cadastrar Empresa</h4>
+    </div>
+
+    <div class="card-body">
+
+        <form method="POST" novalidate>
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label">Nome</label>
+                {{ form.nome }}
+                {% if form.nome.errors %}
+                    <div class="text-danger small">
+                        {{ form.nome.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">CNPJ</label>
+                {{ form.cnpj }}
+                {% if form.cnpj.errors %}
+                    <div class="text-danger small">
+                        {{ form.cnpj.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Endereço</label>
+                {{ form.endereco }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                {{ form.email }}
+            </div>
+             <div class="mb-3">
+                <label class="form-label">Telefone</label>
+                {{ form.telefone }}
+            </div>
+             <div class="mb-3">
+                <label class="form-label">Esta Ativo</label>
+                {{ form.esta_ativo }}
+            </div>
+            
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'empresas:listar_empresas' %}" class="btn btn-secondary">
+                    Voltar
+                </a>
+
+                <button type="submit" class="btn btn-primary">
+                    Salvar
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

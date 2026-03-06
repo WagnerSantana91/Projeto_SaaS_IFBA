@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block title %}Novo Funcionário{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+    <div class="card-header bg-white">
+        <h4 class="mb-0">Cadastrar Funcionário</h4>
+    </div>
+
+    <div class="card-body">
+
+        <form method="POST" novalidate>
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label">Empresa</label>
+                {{ form.empresa }}
+                {% if form.empresa.errors %}
+                    <div class="text-danger small">
+                        {{ form.empresa.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Nome</label>
+                {{ form.nome }}
+                {% if form.nome.errors %}
+                    <div class="text-danger small">
+                        {{ form.nome.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Cargo</label>
+                {{ form.cargo }}
+                {% if form.cargo.errors %}
+                    <div class="text-danger small">
+                        {{ form.cargo.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">CPF</label>
+                {{ form.cpf }}
+                {% if form.cpf.errors %}
+                    <div class="text-danger small">
+                        {{ form.cpf.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Telefone</label>
+                {{ form.telefone }}
+                {% if form.telefone.errors %}
+                    <div class="text-danger small">
+                        {{ form.telefone.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'funcionarios:listar_funcionarios' %}" class="btn btn-secondary">
+                    Voltar
+                </a>
+
+                <button type="submit" class="btn btn-primary">
+                    Salvar
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

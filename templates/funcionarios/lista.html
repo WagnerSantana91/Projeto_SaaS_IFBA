@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% block title %}Funcionários{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>Funcionários</h3>
+    <a href="{% url 'funcionarios:criar_funcionario' %}" class="btn btn-primary">Novo Funcionário</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Empresa</th>
+                    <th>Nome</th>
+                    <th>Cargo</th>
+                    <th>CPF</th>
+                    <th>Telefone</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for funcionario in funcionarios %}
+                <tr>
+                    <td>{{ funcionario.empresa }}</td>
+                    <td>{{ funcionario.nome }}</td>
+                    <td>{{ funcionario.cargo }}</td>
+                    <td>{{ funcionario.cpf }}</td>
+                    <td>{{ funcionario.telefone }}</td>
+                    <td>
+                        <a href="{% url 'funcionarios:editar_funcionario' funcionario.id %}" 
+   class="btn btn-sm btn-warning btn-sm">
+   Editar
+</a>
+
+                        <button class="btn btn-sm btn-danger">Excluir</button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">Nenhum cliente cadastrado</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+{% endblock %}

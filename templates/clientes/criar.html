@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}Novo Cliente{% endblock %}
+
+{% block content %}
+
+<div class="card shadow-sm">
+    <div class="card-header bg-white">
+        <h4 class="mb-0">Cadastrar Cliente</h4>
+    </div>
+
+    <div class="card-body">
+
+        <form method="POST" novalidate>
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label">Nome</label>
+                {{ form.nome }}
+                {% if form.nome.errors %}
+                    <div class="text-danger small">
+                        {{ form.nome.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">CPF</label>
+                {{ form.cpf }}
+                {% if form.cpf.errors %}
+                    <div class="text-danger small">
+                        {{ form.cpf.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Telefone</label>
+                {{ form.telefone }}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Email</label>
+                {{ form.email }}
+            </div>
+
+            <div class="d-flex justify-content-between">
+                <a href="{% url 'clientes:listar_clientes' %}" class="btn btn-secondary">
+                    Voltar
+                </a>
+
+                <button type="submit" class="btn btn-primary">
+                    Salvar
+                </button>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}

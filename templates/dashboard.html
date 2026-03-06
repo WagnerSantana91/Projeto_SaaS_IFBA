@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+
+<h3 class="mb-4">Dashboard</h3>
+
+
+<div class="row">
+
+    <div class="col-md-3">
+        <div class="card shadow-sm p-3">
+            <h6>Quartos Disponíveis</h6>
+            <h2>{{ total_quartos_disponiveis }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm p-3">
+            <h6>Reservas Hoje</h6>
+            <h2>{{ total_reservas_hoje }}</h2>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="card shadow-sm p-3">
+            <h6>Clientes Cadastrados</h6>
+            <h2>{{ total_clientes }}</h2>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

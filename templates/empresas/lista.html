@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% block title %}Empresa{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>Empresas</h3>
+    <a href="{% url 'empresas:criar_empresa' %}" class="btn btn-primary">Nova Empresa</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>CNPJ</th>
+                    <th>Endereço</th>
+                    <th>Email</th>
+                    <th>Telefone</th>
+                    <th>Está Ativo</th>
+                    <th>Data da Criação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for empresa in empresas %}
+                <tr>
+                    <td>{{ empresa.nome }}</td>
+                    <td>{{ empresa.cnpj_formatado }}</td>
+                    <td>{{ empresa.endereco }}</td>
+                    <td>{{ empresa.email }}</td>
+                    <td>{{ empresa.telefone_formatado }}</td>
+                    <td>{{ empresa.esta_ativo|yesno:"Sim,Não" }}</td>
+                    <td>{{ empresa.criado_em|date:"d/m/Y" }}</td>
+                    <td>
+                        <a href="{% url 'empresas:editar_empresa' empresa.id %}" 
+   class="btn btn-sm btn-warning btn-sm">
+   Editar
+</a>
+
+                        <button class="btn btn-sm btn-danger">Excluir</button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center">Nenhuma empresa cadastrada</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}Clientes{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>Quartos</h3>
+    <a href="{% url 'quartos:criar_quarto' %}" class="btn btn-primary">Novo Quarto</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Numero</th>
+                    <th>Tipo</th>
+                    <th>Valor da Hora</th>
+                    <th>Status</th>
+                    <th>Data de Criação</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for quarto in quartos %}
+                <tr>
+                    <td>{{ quarto.numero }}</td>
+                    <td>{{ quarto.tipo }}</td>
+                    <td>R$ {{ quarto.valor_hora }}</td>
+                    <td>{{ quarto.status }}</td>
+                    <td>{{ quarto.criado_em|date:"d/m/Y" }}</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning">Editar</button>
+                        <button class="btn btn-sm btn-danger">Excluir</button>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="6" class="text-center">Nenhum cliente cadastrado</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+{% endblock %}
