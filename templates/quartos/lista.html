@@ -30,8 +30,19 @@
                     <td>{{ quarto.status }}</td>
                     <td>{{ quarto.criado_em|date:"d/m/Y" }}</td>
                     <td>
-                        <button class="btn btn-sm btn-warning">Editar</button>
-                        <button class="btn btn-sm btn-danger">Excluir</button>
+                        
+<!-- Botão de editar incrementado no projeto-->
+                        <a href="{% url 'quartos:editar_quarto' quarto.id %}" 
+   class="btn btn-sm btn-warning btn-sm">
+   Editar
+</a>
+
+<!-- Botão de excluir incrementado no projeto-->
+                        <a href="{% url 'quartos:excluir_quarto' quarto.id %}" 
+   class="btn btn-danger"
+   onclick="return confirm('Tem certeza que deseja excluir este quarto?');">
+   Excluir
+</a>
                     </td>
                 </tr>
                 {% empty %}

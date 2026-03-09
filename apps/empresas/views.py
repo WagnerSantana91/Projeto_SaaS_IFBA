@@ -33,3 +33,8 @@ def editar_empresa(request, id):#will:
     return render(request, "empresas/editar.html", {
         "form": form#will:
     })
+
+def excluir_empresa(request, id): #Incrementação do botão de excluir empresa
+    empresa = get_object_or_404(Empresa, id = id)
+    empresa.delete()
+    return redirect('empresas:listar_empresas')

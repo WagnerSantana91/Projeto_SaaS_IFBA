@@ -36,3 +36,8 @@ def editar_cliente(request, id):#will:
     return render(request, "clientes/editar.html", {
         "form": form#will:
     })
+
+def excluir_cliente(request, id): #Incrementando botão de excluir
+    cliente = get_object_or_404(Cliente, id = id)
+    cliente.delete()
+    return redirect('clientes:listar_clientes')

@@ -7,6 +7,5 @@ urlpatterns = [
     path('lista/', views.listar_clientes, name='listar_clientes'),
     path('cadastro/', views.criar_cliente, name='criar_cliente'),
     path("editar/<int:id>/", views.editar_cliente, name="editar_cliente"),  #Will
-
-
+    path('excluir/<int:id>/', views.excluir_cliente, name = 'excluir_cliente'), #Incrementando botão de excluir
 ]

@@ -30,12 +30,19 @@
                     <td>{{ funcionario.cpf }}</td>
                     <td>{{ funcionario.telefone }}</td>
                     <td>
+                        
+<!-- Botão de editar incrementado no projeto-->
                         <a href="{% url 'funcionarios:editar_funcionario' funcionario.id %}" 
    class="btn btn-sm btn-warning btn-sm">
    Editar
 </a>
 
-                        <button class="btn btn-sm btn-danger">Excluir</button>
+<!-- Botão de excluir incrementado no projeto-->
+                        <a href="{% url 'funcionarios:excluir_funcionario' funcionario.id %}" 
+   class="btn btn-danger"
+   onclick="return confirm('Tem certeza que deseja excluir este funcionario?');">
+   Excluir
+</a>
                     </td>
                 </tr>
                 {% empty %}

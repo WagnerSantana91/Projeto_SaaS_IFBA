@@ -33,3 +33,8 @@ def editar_funcionario(request, id):#will:
     return render(request, "funcionarios/editar.html", {
         "form": form#will:
     })
+
+def excluir_funcionario(request, id): #Incrementação do botão de excluir
+    funcionario = get_object_or_404(Funcionario, id = id)
+    funcionario.delete()
+    return redirect('funcionarios:listar_funcionarios')

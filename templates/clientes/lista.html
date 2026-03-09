@@ -31,12 +31,19 @@
                     <td>{{ cliente.email }}</td>
                     <td>{{ cliente.criado_em|date:"d/m/Y" }}</td>
                     <td>
+
+<!-- Botão de editar incrementado no projeto-->
                         <a href="{% url 'clientes:editar_cliente' cliente.id %}" 
    class="btn btn-sm btn-warning btn-sm">
    Editar
 </a>
 
-                        <button class="btn btn-sm btn-danger">Excluir</button>
+<!-- Botão de excluir incrementado no projeto-->
+                        <a href="{% url 'clientes:excluir_cliente' cliente.id %}" 
+   class="btn btn-danger"
+   onclick="return confirm('Tem certeza que deseja excluir este cliente?');">
+   Excluir
+</a>
                     </td>
                 </tr>
                 {% empty %}

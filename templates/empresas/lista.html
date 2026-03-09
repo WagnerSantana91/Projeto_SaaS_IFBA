@@ -34,12 +34,20 @@
                     <td>{{ empresa.esta_ativo|yesno:"Sim,Não" }}</td>
                     <td>{{ empresa.criado_em|date:"d/m/Y" }}</td>
                     <td>
+                        
+<!-- Botão de editar incrementado no projeto-->
                         <a href="{% url 'empresas:editar_empresa' empresa.id %}" 
    class="btn btn-sm btn-warning btn-sm">
    Editar
 </a>
 
-                        <button class="btn btn-sm btn-danger">Excluir</button>
+<!-- Botão de excluir incrementado no projeto-->
+                        <a href="{% url 'empresas:excluir_empresa' empresa.id %}" 
+   class="btn btn-danger"
+   onclick="return confirm('Tem certeza que deseja excluir esta empresa?');">
+   Excluir
+</a>
+
                     </td>
                 </tr>
                 {% empty %}
