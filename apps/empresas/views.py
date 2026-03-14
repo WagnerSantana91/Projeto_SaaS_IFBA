@@ -1,11 +1,16 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
 from .models import Empresa
 from .form import EmpresaForm
 
+
+@login_required
 def listar_empresas(request):
     empresa = Empresa.objects.all()
     return render(request, 'empresas/lista.html', {'empresas': empresa})    
-    
+
+
+@login_required
 def criar_empresa(request):
     if request.method == 'POST':
         form = EmpresaForm(request.POST)
@@ -16,6 +21,8 @@ def criar_empresa(request):
         form = EmpresaForm()
     return render(request, 'empresas/criar.html', {'form': form})
 
+
+@login_required
 def editar_empresa(request, id):#will:
 
     empresa = get_object_or_404(Empresa, id=id)#will:
@@ -34,6 +41,9 @@ def editar_empresa(request, id):#will:
         "form": form#will:
     })
 
+
+
+@login_required
 def excluir_empresa(request, id): #Incrementação do botão de excluir empresa
     empresa = get_object_or_404(Empresa, id = id)
     empresa.delete()

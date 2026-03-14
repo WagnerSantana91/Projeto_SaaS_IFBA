@@ -1,25 +1,42 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from apps.clientes.models import Cliente
-#from apps.reservas.models import Reserva
 from apps.quartos.models import Quarto
-
-
-#Essa função é responsável por exibir o dashboard, onde é possível visualizar o total de clientes
-#cadastrados. Ela consulta o banco de dados para contar o número de clientes e passa essa informação
-#para o template 'dashboard.html' através do contexto. O template pode então exibir essa informação de forma visual para o usuário.
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
 def dashboard(request):
+    """View do dashboard com estatísticas"""
     total_clientes = Cliente.objects.count()
-    #total_reservas_hoje = Reserva.objects.filter (data_reserva__date=timezone.now().date()).count()
-    total_quartos_disponiveis = Quarto.objects.filter (status='disponivel').count()
+    total_quartos_disponiveis = Quarto.objects.filter(status='disponivel').count()
 
-    context = {'total_clientes': total_clientes,
-               #'total_reservas_hoje': total_reservas_hoje,
-               'total_quartos_disponiveis': total_quartos_disponiveis
-               }
-    return render (request, 'dashboard.html', context)
+    context = {
+        'total_clientes': total_clientes,
+        'total_quartos_disponiveis': total_quartos_disponiveis
+    }
+    return render(request, 'dashboard.html', context)
 
+def login_view(request):
+    """View responsável pelo login do usuário"""
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        # Autentica o usuário
+        user = authenticate(request, username=username, password=password)
+        
+        if user is not None:
+            # Login bem-sucedido
+            login(request, user)
+            return redirect('core:dashboard')
+        else:
+            # Login falhou
+            messages.error(request, 'Usuário ou senha inválidos.')
+    
+    # Se for GET, mostra a página de login
+    return render(request, 'login.html')
 
-
-#def dashboard(request):
-#    return render(request, 'dashboard.html')
+def logout_view(request):
+    logout(request)
+    #messages.success(request, 'Logout realizado com sucesso.')
+    return redirect('core:login')

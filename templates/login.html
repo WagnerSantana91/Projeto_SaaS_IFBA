@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atecubamos - Login</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/css_login.css' %}" type="text/css">
+</head>
+<body>
+    <div class="container">
+        <div class="login-box">
+            <div class="header">
+                <h1 class="sistema-nome">Atecubamos</h1>
+                <p class="sistema-sub">Sistema de Gestão para Motéis</p>
+            </div>
+            
+            <!-- Formulário de Login -->
+            <div class="login-form">
+                <h2>Acesse a sua conta</h2>
+
+                    {% if messages %}
+                        <div class="mensagens">
+                            {% for message in messages %}
+                                <div class="alert {{ message.tags }}">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                
+                <form method="post" action="{% url 'core:login' %}">
+                    {% csrf_token %}
+                    
+                    <!-- Campo Usuário -->
+                    <div class="input-group">
+                        <label for="username">Usuário</label>
+                        <input type="text" 
+                               name="username" 
+                               id="username" 
+                               placeholder="Digite seu usuário" 
+                               required>
+                    </div>
+                    
+                    <!-- Campo Senha -->
+                    <div class="input-group">
+                        <label for="password">Senha</label>
+                        <input type="password" 
+                               name="password" 
+                               id="password" 
+                               placeholder="Digite sua senha" 
+                               required>
+                    </div>
+                    
+                    <!-- Botão -->
+                    <button type="submit" class="btn-autenticar">Entrar</button>
+                </form>
+            </div>
+                <!-- Footer -->
+                <div class="footer">
+                    <p>Desenvolvido por Wagner Santana</p>
+                    <p class="marca">Atecubamos</p>
+                </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -132,3 +133,35 @@ STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Login do sistema
+LOGIN_URL = '/'
+LOGIN_REDIRECT_URL = '/dashboard/'
+
+
+#Responsavel por configurar o tempo de sessão do usuário, garantindo que ele seja desconectado 
+# após um período de inatividade, aumentando a segurança do sistema.
+
+# Tempo de sessão em segundos (20 minutos = 1200 segundos)
+SESSION_COOKIE_AGE = 1200  # 20 minutos
+
+# Não renovar a cada requisição - expira após 20min de inatividade
+SESSION_SAVE_EVERY_REQUEST = False
+
+# Expirar quando fechar o navegador? (False = mantém até expirar o tempo)
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+
+# Segurança
+SESSION_COOKIE_HTTPONLY = True
+SESSION_COOKIE_SAMESITE = 'Lax'
+
+# URL para redirecionar quando a sessão expirar (opcional)
+LOGIN_URL = 'core:login'
+
+
+MESSAGE_TAGS = {
+    messages.ERROR: 'error',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.INFO: 'info',
+}

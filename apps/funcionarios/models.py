@@ -10,7 +10,6 @@ class Funcionario(models.Model):
         ('manutencao', 'Manutenção'),
     )
 
-    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='funcionarios',verbose_name='Empresa')
     nome = models.CharField(max_length=100, verbose_name='Nome')
     cargo = models.CharField(max_length=20, choices=CARGO_CHOICES, verbose_name='Cargo')
     cpf = models.CharField(max_length=14, unique=True, verbose_name='CPF')

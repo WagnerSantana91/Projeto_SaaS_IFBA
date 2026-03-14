@@ -8,9 +8,8 @@ class FuncionarioForm(forms.ModelForm):
 
     class Meta:
         model = Funcionario
-        fields = ['empresa', 'nome', 'cargo', 'cpf', 'telefone']
+        fields = ['nome', 'cargo', 'cpf', 'telefone']
         widgets = {
-            'empresa': forms.Select(attrs={'class': 'form-control'}),
             'nome': forms.TextInput(attrs={'class': 'form-control'}),
             'cargo': forms.Select(attrs={'class': 'form-control'}),
             'cpf': forms.TextInput(attrs={'class': 'form-control', 'id': 'cpf'}),
