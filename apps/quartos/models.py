@@ -31,3 +31,12 @@ class Quarto(models.Model):
     def __str__(self):
         return f'Quarto - {self.numero} )'
     
+
+    def cor_status(self):
+        cores = {
+            'ocupado': '#e74c3c',
+            'livre': '#2ecc71',
+            'limpeza': '#f1c40f',
+            'manutencao': '#7f8c8d',
+        }
+        return cores.get(self.status, '#34495e')

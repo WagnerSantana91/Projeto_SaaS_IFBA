@@ -192,3 +192,11 @@ body:has(#sidebar.collapsed) #content{
         width: 100% !important;
     }
 }
+
+/* DASHBOARD QUARTOS */
+.card {
+    transition: 0.2s;
+}
+.card:hover {
+    transform: scale(1.03);
+}

@@ -9,47 +9,194 @@
     </div>
 
     <div class="card-body">
-
-        <form method="POST" novalidate>
+        <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
 
-            <div class="mb-3">
-                <label class="form-label">Nome</label>
-                {{ form.nome }}
-                {% if form.nome.errors %}
-                    <div class="text-danger small">
-                        {{ form.nome.errors }}
+            <div class="row">
+
+                <!-- VEÍCULO -->
+                <div class="col-12">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-dark text-white">
+                            🚗 Veículo
+                        </div>
+
+                        <div class="card-body">
+
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label>Placa</label>
+                                    {{ veiculo_form.placa }}
+                                    {% if veiculo_form.placa.errors %}
+                                        <div class="text-danger small mt-1">
+                                            {{ veiculo_form.placa.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Modelo</label>
+                                    {{ veiculo_form.modelo }}
+                                    {% if veiculo_form.modelo.errors %}
+                                        <div class="text-danger small mt-1">
+                                            {{ veiculo_form.modelo.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+
+                                <div class="col-md-4">
+                                    <label>Cor</label>
+                                    {{ veiculo_form.cor }}
+                                    {% if veiculo_form.cor.errors %}
+                                        <div class="text-danger small mt-1">
+                                            {{ veiculo_form.cor.errors }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+
+                            <div class="mt-3">
+                                <label>Cor personalizada</label>
+                                {{ veiculo_form.cor_personalizada }}
+                                {% if veiculo_form.cor_personalizada.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ veiculo_form.cor_personalizada.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="mt-3">
+                                <label>Imagem do Veículo</label>
+                                {{ veiculo_form.imagem }}
+                                {% if veiculo_form.imagem.errors %}
+                                    <div class="text-danger small mt-1">
+                                        {{ veiculo_form.imagem.errors }}
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                        </div>
                     </div>
-                {% endif %}
-            </div>
+                </div>
 
-            <div class="mb-3">
-                <label class="form-label">CPF</label>
-                {{ form.cpf }}
-                {% if form.cpf.errors %}
-                    <div class="text-danger small">
-                        {{ form.cpf.errors }}
+                <!-- MODO DE CONDUÇÃO -->
+                <div class="col-12">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-primary text-white">
+                            🕹️ Modo de Condução
+                        </div>
+
+                        <div class="card-body">
+                            <div class="d-flex flex-wrap">
+                                {% for radio in veiculo_form.modo_conducao %}
+                                    <div class="form-check me-3">
+                                        {{ radio.tag }} 
+                                        <label class="form-check-label">{{ radio.choice_label }}</label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                            {% if veiculo_form.modo_conducao.errors %}
+                                <div class="text-danger small mt-2">
+                                    {{ veiculo_form.modo_conducao.errors }}
+                                </div>
+                            {% endif %}
+                        </div>
                     </div>
-                {% endif %}
+                </div>
+
+                <!-- PESSOAS -->
+                <div class="col-12">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-secondary text-white d-flex justify-content-between align-items-center">
+                            <span>👤 Pessoas no Veículo</span>
+                            <button type="button" class="btn btn-sm btn-light" id="add-pessoa-btn">
+                                + Adicionar Pessoa
+                            </button>
+                        </div>
+
+                        <div class="card-body">
+                            <!-- Mensagens de erro do formset -->
+                            {% if formset.non_form_errors %}
+                                <div class="alert alert-danger">
+                                    {{ formset.non_form_errors }}
+                                </div>
+                            {% endif %}
+
+                            <!-- Campo de gerenciamento do formset -->
+                            {{ formset.management_form }}
+
+                            <!-- Container para os formulários das pessoas -->
+                            <div id="pessoas-container">
+                                {% for form in formset %}
+                                    <div class="pessoa-form card mb-3 p-3" data-form-index="{{ forloop.counter0 }}">
+                                        <div class="row align-items-end">
+                                            <div class="col-md-5">
+                                                <label>Nome</label>
+                                                {{ form.nome }}
+                                                {% if form.nome.errors %}
+                                                    <div class="text-danger small mt-1">
+                                                        {{ form.nome.errors }}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <label>CPF</label>
+                                                {{ form.cpf }}
+                                                {% if form.cpf.errors %}
+                                                    <div class="text-danger small mt-1">
+                                                        {{ form.cpf.errors }}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <div class="col-md-2">
+                                                <div class="form-check">
+                                                    {{ form.estrangeiro }}
+                                                    <label class="form-check-label">
+                                                        Estrangeiro
+                                                    </label>
+                                                </div>
+                                                {% if form.estrangeiro.errors %}
+                                                    <div class="text-danger small mt-1">
+                                                        {{ form.estrangeiro.errors }}
+                                                    </div>
+                                                {% endif %}
+                                            </div>
+
+                                            <div class="col-md-1 text-end">
+                                                {% if form.DELETE %}
+                                                    <div class="form-check">
+                                                        {{ form.DELETE }}
+                                                        <label class="form-check-label" title="Marcar para remover">
+                                                            🗑️
+                                                        </label>
+                                                    </div>
+                                                {% else %}
+                                                    <button type="button" class="btn btn-sm btn-danger remove-pessoa-btn">
+                                                        🗑️
+                                                    </button>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
-            <div class="mb-3">
-                <label class="form-label">Telefone</label>
-                {{ form.telefone }}
-            </div>
-
-            <div class="mb-3">
-                <label class="form-label">Email</label>
-                {{ form.email }}
-            </div>
-
+            <!-- BOTÕES -->
             <div class="d-flex justify-content-between">
                 <a href="{% url 'clientes:listar_clientes' %}" class="btn btn-secondary">
                     Voltar
                 </a>
 
-                <button type="submit" class="btn btn-primary">
-                    Salvar
+                <button type="submit" class="btn btn-success">
+                    Salvar Cliente
                 </button>
             </div>
 
@@ -57,5 +204,98 @@
 
     </div>
 </div>
+
+<!-- JavaScript para adicionar/remover pessoas dinamicamente -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const container = document.getElementById('pessoas-container');
+    const addBtn = document.getElementById('add-pessoa-btn');
+    const managementForm = document.querySelector('[name=cliente_set-TOTAL_FORMS]');
+    
+    // Função para atualizar os índices dos formulários
+    function updateFormIndices() {
+        const forms = container.querySelectorAll('.pessoa-form');
+        forms.forEach((form, index) => {
+            form.setAttribute('data-form-index', index);
+            // Atualizar IDs e names dos campos
+            form.querySelectorAll('[name*="cliente_set-"]').forEach(field => {
+                const fieldName = field.getAttribute('name');
+                const newName = fieldName.replace(/cliente_set-\d+-/, `cliente_set-${index}-`);
+                field.setAttribute('name', newName);
+                
+                const fieldId = field.getAttribute('id');
+                if (fieldId) {
+                    const newId = fieldId.replace(/id_cliente_set-\d+-/, `id_cliente_set-${index}-`);
+                    field.setAttribute('id', newId);
+                }
+            });
+        });
+        managementForm.value = forms.length;
+    }
+    
+    // Adicionar nova pessoa
+    addBtn.addEventListener('click', function() {
+        const forms = container.querySelectorAll('.pessoa-form');
+        const formCount = forms.length;
+        
+        // Criar novo formulário baseado no último
+        const newForm = document.createElement('div');
+        newForm.className = 'pessoa-form card mb-3 p-3';
+        newForm.setAttribute('data-form-index', formCount);
+        newForm.innerHTML = `
+            <div class="row align-items-end">
+                <div class="col-md-5">
+                    <label>Nome</label>
+                    <input type="text" name="cliente_set-${formCount}-nome" class="form-control" placeholder="Digite o nome completo" id="id_cliente_set-${formCount}-nome">
+                </div>
+                <div class="col-md-4">
+                    <label>CPF</label>
+                    <input type="text" name="cliente_set-${formCount}-cpf" class="form-control" placeholder="000.000.000-00" id="id_cliente_set-${formCount}-cpf">
+                </div>
+                <div class="col-md-2">
+                    <div class="form-check">
+                        <input type="checkbox" name="cliente_set-${formCount}-estrangeiro" class="form-check-input" id="id_cliente_set-${formCount}-estrangeiro">
+                        <label class="form-check-label">Estrangeiro</label>
+                    </div>
+                </div>
+                <div class="col-md-1 text-end">
+                    <button type="button" class="btn btn-sm btn-danger remove-pessoa-btn">🗑️</button>
+                </div>
+            </div>
+            <input type="hidden" name="cliente_set-${formCount}-id" id="id_cliente_set-${formCount}-id">
+            <input type="hidden" name="cliente_set-${formCount}-veiculo" id="id_cliente_set-${formCount}-veiculo">
+        `;
+        
+        container.appendChild(newForm);
+        
+        // Adicionar evento ao botão de remover
+        newForm.querySelector('.remove-pessoa-btn').addEventListener('click', function() {
+            newForm.remove();
+            updateFormIndices();
+        });
+        
+        updateFormIndices();
+    });
+    
+    // Remover pessoa existente
+    document.querySelectorAll('.remove-pessoa-btn').forEach(btn => {
+        btn.addEventListener('click', function() {
+            this.closest('.pessoa-form').remove();
+            updateFormIndices();
+        });
+    });
+});
+</script>
+
+<style>
+.pessoa-form {
+    border-left: 4px solid #6c757d;
+    background-color: #f8f9fa;
+}
+
+.pessoa-form:hover {
+    background-color: #e9ecef;
+}
+</style>
 
 {% endblock %}

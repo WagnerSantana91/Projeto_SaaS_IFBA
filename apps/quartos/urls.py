@@ -8,4 +8,5 @@ urlpatterns = [
     path('cadastro/', views.criar_quarto, name='criar_quarto'),
     path("editar/<int:id>/", views.editar_quarto, name="editar_quarto"),  #Will
     path('excluir/<int:id>/', views.excluir_quarto, name = 'excluir_quarto'), #Incrementando botão de excluir
+    path('dashboard/', views.dashboard_quartos, name='dashboard_quartos'),    
 ]

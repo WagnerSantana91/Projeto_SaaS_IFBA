@@ -3,11 +3,11 @@ from django.contrib.auth.decorators import login_required
 from .models import Quarto
 from .form import QuartoForm
 
-
 @login_required
 def listar_quartos(request):
     quarto = Quarto.objects.all()
     return render(request, 'quartos/lista.html', {'quartos': quarto})
+
 
 
 @login_required
@@ -48,3 +48,11 @@ def excluir_quarto(request, id):
     quarto = get_object_or_404(Quarto, id = id)
     quarto.delete()
     return redirect('quartos:listar_quartos')
+
+
+
+
+@login_required
+def dashboard_quartos(request):
+    quartos = Quarto.objects.all()
+    return render(request, 'quartos/dashboard.html', {'quartos': quartos})

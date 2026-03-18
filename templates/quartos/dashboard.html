@@ -1,0 +1,82 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="container-fluid">
+
+    <h3 class="mb-4">Dashboard de Quartos</h3>
+
+    <div class="row">
+
+        {% if quartos %}
+            {% for quarto in quartos %}
+            <div class="col-md-3 mb-4">
+
+                <div class="card text-white shadow rounded"
+                    style="background-color: {{ quarto.cor_status }}; cursor:pointer;"
+                    onclick="abrirModal({{ quarto.id }})">
+
+                    <div class="card-body">
+
+                        <div class="d-flex justify-content-between mb-2">
+                            <strong>Quarto {{ quarto.numero }}</strong>
+                            <span>{{ quarto.tipo }}</span>
+                        </div>
+
+                        <small>Status: {{ quarto.get_status_display }}</small>
+
+                    </div>
+
+                </div>
+
+            </div>
+            {% endfor %}
+
+        {% else %}
+            <!-- ✅ ADICIONADO: estado vazio do sistema -->
+            <div class="col-12">
+                <div class="alert alert-info text-center p-5">
+                    <h4>Nenhum quarto cadastrado 🏨</h4>
+                    <p>Comece cadastrando seus quartos para usar o sistema.</p>
+
+                    <a href="{% url 'quartos:criar_quarto' %}" class="btn btn-primary">
+                        Cadastrar Primeiro Quarto
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+
+    </div>
+
+</div>
+
+<!-- MODAL RESERVA -->
+<div class="modal fade" id="modalReserva">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5>Reservar Quarto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="formReserva" method="POST">
+                    {% csrf_token %}
+
+                    <input type="text" name="nome" placeholder="Nome" class="form-control mb-2">
+                    <input type="text" name="cpf" placeholder="CPF" class="form-control mb-2">
+
+                    <button type="submit" class="btn btn-success">
+                        Confirmar Reserva
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% load static %}
+<script src="{% static 'js/dashboard.js' %}"></script>
+
+{% endblock %}

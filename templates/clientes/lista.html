@@ -1,54 +1,71 @@
 {% extends 'base.html' %}
-{% block title %}Clientes{% endblock %}
+{% block title %}Clientes por Veículo{% endblock %}
 
 {% block content %}
 
 <div class="d-flex justify-content-between align-items-center mb-4">
-    <h3>Clientes</h3>
-    <a href="{% url 'clientes:criar_cliente' %}" class="btn btn-primary">Novo Cliente</a>
+    <h3>Veículos e Clientes</h3>
+    <a href="{% url 'clientes:criar_cliente' %}" class="btn btn-primary">Novo Cadastro</a>
 </div>
 
 <div class="card shadow-sm">
     <div class="card-body">
 
         <table class="table table-hover">
-            <thead>
+            <thead class="table-dark">
                 <tr>
-                    <th>Nome</th>
-                    <th>CPF</th>
-                    <th>Telefone</th>
-                    <th>Email</th>
-                    <th>Criado em</th>
+                    <th>Placa</th>
+                    <th>Modelo</th>
+                    <th>Cor</th>
+                    <th>Pessoas no Veículo</th>
+                    <th>Entrada</th>
                     <th>Ações</th>
                 </tr>
             </thead>
             <tbody>
-                {% for cliente in clientes %}
+                {% for veiculo in veiculos %}
                 <tr>
-                    <td>{{ cliente.nome }}</td>
-                    <td>{{ cliente.cpf_formatado }}</td>
-                    <td>{{ cliente.telefone }}</td>
-                    <td>{{ cliente.email }}</td>
-                    <td>{{ cliente.criado_em|date:"d/m/Y" }}</td>
+                    <td><strong>{{ veiculo.placa }}</strong></td>
+                    <td>{{ veiculo.modelo }}</td>
                     <td>
-
-<!-- Botão de editar incrementado no projeto-->
-                        <a href="{% url 'clientes:editar_cliente' cliente.id %}" 
-   class="btn btn-sm btn-warning btn-sm">
-   Editar
-</a>
-
-<!-- Botão de excluir incrementado no projeto-->
-                        <a href="{% url 'clientes:excluir_cliente' cliente.id %}" 
-   class="btn btn-danger"
-   onclick="return confirm('Tem certeza que deseja excluir este cliente?');">
-   Excluir
-</a>
+                        {% if veiculo.cor == 'outro' %}
+                            {{ veiculo.cor_personalizada }}
+                        {% else %}
+                            {{ veiculo.get_cor_display }}
+                        {% endif %}
+                    </td>
+                    <td>
+                        <ul class="list-unstyled mb-0">
+                            {% for pessoa in veiculo.pessoas.all %}
+                                <li>
+                                    <i class="bi bi-person-fill"></i> 
+                                    {{ pessoa.nome }} <small class="text-muted">({{ pessoa.cpf_formatado }})</small>
+                                </li>
+                            {% empty %}
+                                <li class="text-danger">Nenhuma pessoa vinculada</li>
+                            {% endfor %}
+                        </ul>
+                    </td>
+                    <td>{{ veiculo.criado_em|date:"d/m/Y H:i" }}</td>
+                    <td>
+                        <div class="btn-group">
+                            <a href="{% url 'clientes:editar_cliente' veiculo.id %}" 
+                               class="btn btn-sm btn-warning">
+                               Editar
+                            </a>
+                            <a href="{% url 'clientes:excluir_cliente' veiculo.id %}" 
+                               class="btn btn-sm btn-danger"
+                               onclick="return confirm('Tem certeza que deseja excluir este veículo e todas as pessoas vinculadas a ele?');">
+                               Excluir
+                            </a>
+                        </div>
                     </td>
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="6" class="text-center">Nenhum cliente cadastrado</td>
+                    <td colspan="6" class="text-center py-4 text-muted">
+                        Nenhum veículo cadastrado no momento.
+                    </td>
                 </tr>
                 {% endfor %}
             </tbody>
@@ -56,5 +73,19 @@
 
     </div>
 </div>
+
+<style>
+    .table td {
+        vertical-align: middle;
+    }
+    .list-unstyled li {
+        font-size: 0.9rem;
+        border-bottom: 1px solid #eee;
+        padding: 2px 0;
+    }
+    .list-unstyled li:last-child {
+        border-bottom: none;
+    }
+</style>
 
 {% endblock %}
