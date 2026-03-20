@@ -195,22 +195,15 @@ body:has(#sidebar.collapsed) #content{
 
 /* DASHBOARD QUARTOS */
 .card {
-    transition: 0.2s;
-}
-.card:hover {
-    transform: scale(1.03);
+    transition: box-shadow 0.2s;
 }
 /* MÓDULO FINANCEIRO - ADICIONADO RECENTEMENTE */
 .card-financeiro {  /* ADICIONADO RECENTEMENTE */
     border-radius: 10px;  /* ADICIONADO RECENTEMENTE */
     padding: 5px;  /* ADICIONADO RECENTEMENTE */
-    transition: transform 0.2s;  /* ADICIONADO RECENTEMENTE */
+    transition: background-color 0.2s, border-color 0.2s;  /* ADICIONADO RECENTEMENTE */
     background-color: #ffffff;  /* ADICIONADO RECENTEMENTE */
     color: #111827;  /* ADICIONADO RECENTEMENTE — texto preto em todos os cards */
-}  /* ADICIONADO RECENTEMENTE */
-
-.card-financeiro:hover {  /* ADICIONADO RECENTEMENTE */
-    transform: scale(1.03);  /* ADICIONADO RECENTEMENTE */
 }  /* ADICIONADO RECENTEMENTE */
 
 .card-financeiro.entrada {  /* ALTERADO RECENTEMENTE — borda verde no lugar de fundo verde para manter texto legível */

@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Sum     
 from .models import Entrada, Saida     
 from .forms import EntradaForm, SaidaForm     
+from apps.core.email_utils import enviar_email_notificacao
 
 
 
@@ -39,7 +40,17 @@ def financeiro_dashboard(request):
 def nova_entrada(request):     
     form = EntradaForm(request.POST or None)     
     if request.method == 'POST' and form.is_valid():     
-        form.save()     
+        entrada = form.save()
+        enviar_email_notificacao(
+            assunto='Nova entrada financeira registrada',
+            mensagem=(
+                'Uma nova entrada foi registrada no sistema.\n\n'
+                f'Cliente: {entrada.cliente}\n'
+                f'Valor: R$ {entrada.valor}\n'
+                f'Forma de pagamento: {entrada.forma_pagamento}\n'
+                f'Data: {entrada.data:%d/%m/%Y %H:%M}'
+            ),
+        )     
         return redirect('pagamentos:financeiro_dashboard')     
     return render(request, 'pagamentos/nova_entrada.html', {'form': form})     
 
@@ -48,6 +59,15 @@ def nova_entrada(request):
 def nova_saida(request):     
     form = SaidaForm(request.POST or None)     
     if request.method == 'POST' and form.is_valid():     
-        form.save()     
+        saida = form.save()
+        enviar_email_notificacao(
+            assunto='Nova saida financeira registrada',
+            mensagem=(
+                'Uma nova saida foi registrada no sistema.\n\n'
+                f'Descricao: {saida.descricao}\n'
+                f'Valor: R$ {saida.valor}\n'
+                f'Data: {saida.data:%d/%m/%Y %H:%M}'
+            ),
+        )     
         return redirect('pagamentos:financeiro_dashboard')     
     return render(request, 'pagamentos/nova_saida.html', {'form': form})     

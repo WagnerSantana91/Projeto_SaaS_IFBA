@@ -4,6 +4,7 @@ from apps.clientes.models import Cliente, Veiculo
 from apps.quartos.models import Quarto
 from apps.pagamentos.models import Entrada        
 from .models import Reserva, Pessoa
+from apps.core.email_utils import enviar_email_notificacao
 
 @login_required
 def criar_reserva(request, quarto_id):
@@ -68,11 +69,24 @@ def criar_reserva(request, quarto_id):
             )
 
 
-        Entrada.objects.create(        
+        entrada = Entrada.objects.create(        
             cliente=cliente,        
             valor=quarto_obj.valor_hora,        
             forma_pagamento=request.POST.get('forma_pagamento', 'dinheiro'),        
-        )        
+        )
+
+        enviar_email_notificacao(
+            assunto=f'Nova reserva registrada - Quarto {quarto_obj.numero}',
+            mensagem=(
+                'Uma nova reserva foi criada no sistema.\n\n'
+                f'Cliente: {cliente.nome}\n'
+                f'Quarto: {quarto_obj.numero}\n'
+                f'Veiculo: {veiculo.placa}\n'
+                f'Valor da entrada: R$ {entrada.valor}\n'
+                f'Forma de pagamento: {entrada.forma_pagamento}\n'
+                f'Data: {reserva.data_entrada:%d/%m/%Y %H:%M}'
+            ),
+        )
 
         return redirect('quartos:dashboard')
 
