@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block title %}Novo Funcionário{% endblock %}
 
 {% block content %}
@@ -63,6 +64,27 @@
                 {% endif %}
             </div>
 
+            <div class="mb-3">
+                <label class="form-label">CEP</label>
+                {{ form.cep }}
+                <div id="cep-status"></div>
+                {% if form.cep.errors %}
+                    <div class="text-danger small">
+                        {{ form.cep.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Endereco</label>
+                {{ form.endereco }}
+                {% if form.endereco.errors %}
+                    <div class="text-danger small">
+                        {{ form.endereco.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
             <div class="d-flex justify-content-between">
                 <a href="{% url 'funcionarios:listar_funcionarios' %}" class="btn btn-secondary">
                     Voltar
@@ -77,5 +99,7 @@
 
     </div>
 </div>
+
+<script src="{% static 'js/funcionarios_cep.js' %}"></script>
 
 {% endblock %}

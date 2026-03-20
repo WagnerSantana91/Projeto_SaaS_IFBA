@@ -5,13 +5,29 @@ from apps.quartos.models import Quarto
 from apps.pagamentos.models import Entrada        
 from .models import Reserva, Pessoa
 from apps.core.email_utils import enviar_email_notificacao
+from decimal import Decimal
 
 @login_required
 def criar_reserva(request, quarto_id):
     if request.method == "POST":
 
               
-        quarto_obj = Quarto.objects.get(id=quarto_id)        
+        quarto_obj = Quarto.objects.get(id=quarto_id)
+        # Regra de negocio: se ocupacao >= 60%, aumenta 20% no valor da hora
+        quartos_ativos = Quarto.objects.filter(esta_ativo=True)
+        total_quartos = quartos_ativos.count()
+        ocupados = quartos_ativos.filter(status='ocupado').count()
+
+        # Conta esta reserva no calculo projetado
+        if quarto_obj.status != 'ocupado':
+            ocupados += 1
+
+        taxa_ocupacao = (ocupados / total_quartos) if total_quartos else 0
+
+        valor_entrada = quarto_obj.valor_hora
+        if taxa_ocupacao >= 0.60:
+            valor_entrada = (valor_entrada * Decimal('1.20')).quantize(Decimal('0.01'))
+        
 
                
         
@@ -54,6 +70,9 @@ def criar_reserva(request, quarto_id):
             modo_conducao=request.POST.get('modo_conducao'),
             veiculo_principal=veiculo
         )
+        if quarto_obj.status != 'ocupado':
+            quarto_obj.status = 'ocupado'
+            quarto_obj.save(update_fields=['status'])
 
         # 4. PESSOAS (Adicionais da reserva)
         nomes = request.POST.getlist('nome_pessoa[]')
@@ -69,10 +88,10 @@ def criar_reserva(request, quarto_id):
             )
 
 
-        entrada = Entrada.objects.create(        
-            cliente=cliente,        
-            valor=quarto_obj.valor_hora,        
-            forma_pagamento=request.POST.get('forma_pagamento', 'dinheiro'),        
+        entrada = Entrada.objects.create(
+            cliente=cliente,
+            valor=valor_entrada,
+            forma_pagamento=request.POST.get('forma_pagamento', 'dinheiro'),
         )
 
         enviar_email_notificacao(

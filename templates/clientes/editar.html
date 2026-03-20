@@ -4,15 +4,23 @@
 
 <h2>Editar Cliente</h2>
 
-<form method="POST">
+<form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
 
-    {{ form.as_p }}
+    <h5 class="mt-3">Dados do Veiculo</h5>
+    {{ veiculo_form.as_p }}
+
+    <h5 class="mt-4">Pessoas</h5>
+    {{ formset.management_form }}
+    {% for form in formset %}
+        <div class="card mb-3 p-3">
+            {{ form.as_p }}
+        </div>
+    {% endfor %}
 
     <button type="submit" class="btn btn-primary">
-        Salvar Alterações
+        Salvar Alteracoes
     </button>
-
 </form>
 
 {% endblock %}

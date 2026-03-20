@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
@@ -8,11 +9,13 @@
     {% csrf_token %}
 
     {{ form.as_p }}
+    <div id="cep-status"></div>
 
     <button type="submit" class="btn btn-primary">
-        Salvar Alterações
+        Salvar Alteracoes
     </button>
-
 </form>
+
+<script src="{% static 'js/funcionarios_cep.js' %}"></script>
 
 {% endblock %}

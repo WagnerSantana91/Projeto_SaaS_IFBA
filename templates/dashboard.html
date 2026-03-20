@@ -31,4 +31,23 @@
 
 </div>
 
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card shadow-sm p-3">
+            <h5 class="mb-2">Previsao do Tempo (Noite)</h5>
+            {% if previsao_tempo.disponivel %}
+                <p class="mb-1"><strong>Previsao:</strong> {{ previsao_tempo.resumo }}</p>
+                <p class="mb-1">
+                    <strong>Chance de mais clientes hoje:</strong>
+                    {{ previsao_tempo.chance_clientes_percentual }}%
+                    ({{ previsao_tempo.chance_clientes_texto }})
+                </p>
+            {% else %}
+                <p class="mb-1">{{ previsao_tempo.resumo }}</p>
+            {% endif %}
+            <small class="text-muted">{{ previsao_tempo.regra }}</small>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

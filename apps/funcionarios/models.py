@@ -14,6 +14,8 @@ class Funcionario(models.Model):
     cargo = models.CharField(max_length=20, choices=CARGO_CHOICES, verbose_name='Cargo')
     cpf = models.CharField(max_length=14, unique=True, verbose_name='CPF')
     telefone = models.CharField(max_length=20, verbose_name='Telefone')
+    cep = models.CharField(max_length=9, blank=True, default='', verbose_name='CEP')
+    endereco = models.CharField(max_length=255, blank=True, default='', verbose_name='Endereco')
 
     def __str__(self):
         return f"{self.nome}"
