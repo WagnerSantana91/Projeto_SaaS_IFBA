@@ -18,8 +18,6 @@ class Quarto(models.Model):
         ('tematica', 'Temática'),
     ]
 
-    #on.delete=models.CASCADE: Isso significa que, se a empresa associada a um quarto for excluída, o quarto também será excluído automaticamente. Isso é útil para manter a integridade dos dados e evitar registros órfãos no banco de dados.
-    #related_name='quartos': Isso permite acessar os quartos associados a uma empresa usando o atributo "quartos" na instância da empresa. Por exemplo, se você tiver uma instância de empresa chamada "empresa", poderá acessar seus quartos usando "empresa.quartos.all()".
 
     numero = models.CharField(max_length=10, verbose_name='Número do Quarto')
     tipo = models.CharField(max_length=50, choices=TIPO_CHOICES, verbose_name='Tipo do Quarto')

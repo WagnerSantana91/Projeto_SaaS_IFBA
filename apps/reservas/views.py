@@ -2,22 +2,37 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from apps.clientes.models import Cliente, Veiculo
 from apps.quartos.models import Quarto
+from apps.pagamentos.models import Entrada        
 from .models import Reserva, Pessoa
 
 @login_required
 def criar_reserva(request, quarto_id):
     if request.method == "POST":
-        # 1. VEÍCULO PRINCIPAL (Criamos primeiro, sem o campo 'cliente')
-        veiculo = Veiculo.objects.create(
-            placa=request.POST.get('placa'),
-            cor=request.POST.get('cor'),
-            cor_personalizada=request.POST.get('cor_personalizada'),
-            modelo=request.POST.get('modelo'),
-            imagem=request.FILES.get('imagem'),
-            modo_conducao=request.POST.get('modo_conducao') # Adicionado se necessário
-        )
 
-        # 2. CLIENTE (Agora vinculamos o cliente ao veículo criado)
+              
+        quarto_obj = Quarto.objects.get(id=quarto_id)        
+
+               
+        
+        placa_normalizada = (request.POST.get('placa') or '').replace('-', '').replace(' ', '').upper()        
+        veiculo, veiculo_criado = Veiculo.objects.get_or_create(        
+            placa=placa_normalizada,        
+            defaults={        
+                'cor': request.POST.get('cor') or 'outro',        
+                'cor_personalizada': request.POST.get('cor_personalizada'),        
+                'modelo': request.POST.get('modelo') or '',        
+                'imagem': request.FILES.get('imagem'),        
+                'modo_conducao': request.POST.get('modo_conducao') or 'proprio',        
+            }        
+        )        
+
+               
+        if not veiculo_criado:        
+            veiculo.modelo = request.POST.get('modelo') or veiculo.modelo        
+            veiculo.cor = request.POST.get('cor') or veiculo.cor        
+            veiculo.save()        
+
+
         nome = request.POST.get('nome')
         cpf = request.POST.get('cpf')
 
@@ -26,7 +41,7 @@ def criar_reserva(request, quarto_id):
             defaults={'nome': nome, 'veiculo': veiculo}
         )
         
-        # Se o cliente já existia, atualizamos o veículo dele para o atual
+
         if not created:
             cliente.veiculo = veiculo
             cliente.save()
@@ -51,6 +66,13 @@ def criar_reserva(request, quarto_id):
                 cpf=cpfs[i],
                 estrangeiro=(str(i) in estrangeiros)
             )
+
+
+        Entrada.objects.create(        
+            cliente=cliente,        
+            valor=quarto_obj.valor_hora,        
+            forma_pagamento=request.POST.get('forma_pagamento', 'dinheiro'),        
+        )        
 
         return redirect('quartos:dashboard')
 

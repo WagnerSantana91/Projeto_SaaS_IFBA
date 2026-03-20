@@ -1,5 +1,19 @@
 from django.db import models
 from django.utils import timezone
+import re       
+from django.core.exceptions import ValidationError       
+
+
+     
+def validar_placa(value):       
+    placa = value.replace('-', '').replace(' ', '').upper()       
+    padrao_antigo = re.compile(r'^[A-Z]{3}[0-9]{4}$')        
+    padrao_mercosul = re.compile(r'^[A-Z]{3}[0-9][A-Z][0-9]{2}$')       
+    if not padrao_antigo.match(placa) and not padrao_mercosul.match(placa):       
+        raise ValidationError(       
+            'Placa inválida. Use o padrão Brasileiro (ABC1234) ou Mercosul (ABC1D23).'       
+        )       
+
 
 class Veiculo(models.Model):
 
@@ -20,7 +34,7 @@ class Veiculo(models.Model):
         ('a_pe', 'A pé'),
     ]
 
-    placa = models.CharField(max_length=10, verbose_name='Placa', unique=True)
+    placa = models.CharField(max_length=10, verbose_name='Placa', unique=True, validators=[validar_placa])  # ALTERADO RECENTEMENTE
     cor = models.CharField(max_length=20, choices=CORES_CHOICES, verbose_name='Cor')
     cor_personalizada = models.CharField(max_length=30, blank=True, null=True)
     modo_conducao = models.CharField(max_length=20, default='proprio', choices=MODO_CONDUCAO_CHOICES, verbose_name='Modo de Condução')

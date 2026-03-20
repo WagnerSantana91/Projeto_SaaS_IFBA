@@ -61,3 +61,7 @@ document.addEventListener("DOMContentLoaded", function () {
     aplicarMascara("cnpj","00.000.000/0000-00");
 
 });
+// MÓDULO FINANCEIRO - ADICIONADO RECENTEMENTE
+function confirmarExclusao(mensagem) {  // ADICIONADO RECENTEMENTE
+    return confirm(mensagem || 'Tem certeza que deseja excluir este registro?');  // ADICIONADO RECENTEMENTE
+}  // ADICIONADO RECENTEMENTE

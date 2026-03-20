@@ -5,6 +5,5 @@ app_name = 'reservas'
 
 urlpatterns = [
     path('criar/<int:quarto_id>/', criar_reserva, name='criar_reserva'),
-    #path('', listar_reservas, name='listar_reservas'),
     path('', dashboard_reservas, name='dashboard_reservas'),
 ]
