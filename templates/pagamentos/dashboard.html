@@ -1,0 +1,132 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Financeiro{% endblock %}
+
+{% block content %}
+<h4 class="mb-4"><i class="fas fa-dollar-sign"></i> Financeiro</h4>
+
+<!-- FILTRO POR PERÍODO -->
+<div class="card mb-4">
+    <div class="card-body">
+        <form method="GET" class="row g-3 align-items-end">
+            <div class="col-md-4">
+                <label class="form-label">Data Inicial</label>
+                <input type="date" name="inicio" class="form-control" value="{{ request.GET.inicio }}">
+            </div>
+            <div class="col-md-4">
+                <label class="form-label">Data Final</label>
+                <input type="date" name="fim" class="form-control" value="{{ request.GET.fim }}">
+            </div>
+            <div class="col-md-4">
+                <button type="submit" class="btn btn-primary w-100">
+                    <i class="fas fa-filter"></i> Filtrar
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- CARDS DE RESUMO -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card card-financeiro entrada">
+            <div class="card-body">
+                <h6 class="card-title"><i class="fas fa-arrow-up"></i> Total Entradas</h6>
+                <h4>R$ {{ total_entradas }}</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-financeiro saida">
+            <div class="card-body">
+                <h6 class="card-title"><i class="fas fa-arrow-down"></i> Total Saídas</h6>
+                <h4>R$ {{ total_saidas }}</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-financeiro {% if lucro >= 0 %}entrada{% else %}saida{% endif %}">
+            <div class="card-body">
+                <h6 class="card-title"><i class="fas fa-chart-line"></i> Lucro</h6>
+                <h4>R$ {{ lucro }}</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card card-financeiro bg-secondary">
+            <div class="card-body">
+                <h6 class="card-title"><i class="fas fa-concierge-bell"></i> Atendimentos</h6>
+                <h4>{{ entradas.count }}</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- BOTÕES DE AÇÃO -->
+<div class="mb-3">
+    <a href="{% url 'pagamentos:nova_entrada' %}" class="btn btn-success me-2">
+        <i class="fas fa-plus"></i> Nova Entrada
+    </a>
+    <a href="{% url 'pagamentos:nova_saida' %}" class="btn btn-danger">
+        <i class="fas fa-minus"></i> Nova Saída
+    </a>
+</div>
+
+<!-- TABELA DE ENTRADAS -->
+<div class="card mb-4">
+    <div class="card-header fw-bold"><i class="fas fa-arrow-up text-success"></i> Entradas</div>
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Data</th>
+                    <th>Cliente</th>
+                    <th>Forma de Pagamento</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for entrada in entradas %}
+                <tr>
+                    <td>{{ entrada.data|date:"d/m/Y H:i" }}</td>
+                    <td>{{ entrada.cliente }}</td>
+                    <td>{{ entrada.forma_pagamento }}</td>
+                    <td class="text-success fw-bold">R$ {{ entrada.valor }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" class="text-center text-muted py-3">Nenhuma entrada encontrada.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- TABELA DE SAÍDAS -->
+<div class="card mb-4">
+    <div class="card-header fw-bold"><i class="fas fa-arrow-down text-danger"></i> Saídas</div>
+    <div class="card-body p-0">
+        <table class="table table-hover mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>Data</th>
+                    <th>Descrição</th>
+                    <th>Valor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for saida in saidas %}
+                <tr>
+                    <td>{{ saida.data|date:"d/m/Y H:i" }}</td>
+                    <td>{{ saida.descricao }}</td>
+                    <td class="text-danger fw-bold">R$ {{ saida.valor }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="3" class="text-center text-muted py-3">Nenhuma saída encontrada.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+{% endblock %}

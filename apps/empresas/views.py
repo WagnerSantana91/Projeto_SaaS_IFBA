@@ -23,22 +23,22 @@ def criar_empresa(request):
 
 
 @login_required
-def editar_empresa(request, id):#will:
+def editar_empresa(request, id):   
 
-    empresa = get_object_or_404(Empresa, id=id)#will:
+    empresa = get_object_or_404(Empresa, id=id)   
 
     if request.method == "POST":
-        form = EmpresaForm(request.POST, instance=empresa)#will:
+        form = EmpresaForm(request.POST, instance=empresa)   
 
         if form.is_valid():
             form.save()
-            return redirect("empresas:listar_empresas")#will:
+            return redirect("empresas:listar_empresas")   
 
     else:
-        form = EmpresaForm(instance=empresa)#will:
+        form = EmpresaForm(instance=empresa)   
 
     return render(request, "empresas/editar.html", {
-        "form": form#will:
+        "form": form   
     })
 
 

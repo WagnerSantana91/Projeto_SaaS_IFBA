@@ -65,7 +65,7 @@
                     <!-- Campo de Placa com busca -->
                     <div class="mb-3">
                         <label>Placa do Veículo</label>
-                        <input type="text" name="placa" id="id_placa" class="form-control" placeholder="ABC-1234" required>
+                        <input type="text" name="placa" id="id_placa" class="form-control" placeholder="ABC1234 ou ABC1D23" required>
                         <div id="placa-status" class="small mt-1"></div>
                     </div>
 
@@ -84,6 +84,17 @@
                     <h6>Pessoa que está no carro agora:</h6>
                     <input type="text" name="nome" id="id_nome" placeholder="Nome da Pessoa" class="form-control mb-2" required>
                     <input type="text" name="cpf" id="id_cpf" placeholder="CPF (opcional)" class="form-control mb-2">
+
+                    <!-- ADICIONADO RECENTEMENTE — campo de forma de pagamento para registrar no financeiro -->
+                    <div class="mb-3">
+                        <label>Forma de Pagamento</label>
+                        <select name="forma_pagamento" class="form-control">  <!-- ADICIONADO RECENTEMENTE -->
+                            <option value="dinheiro">Dinheiro</option>  <!-- ADICIONADO RECENTEMENTE -->
+                            <option value="pix">Pix</option>  <!-- ADICIONADO RECENTEMENTE -->
+                            <option value="cartao_credito">Cartão de Crédito</option>  <!-- ADICIONADO RECENTEMENTE -->
+                            <option value="cartao_debito">Cartão de Débito</option>  <!-- ADICIONADO RECENTEMENTE -->
+                        </select>  <!-- ADICIONADO RECENTEMENTE -->
+                    </div>  <!-- ADICIONADO RECENTEMENTE -->
 
                     <button type="submit" class="btn btn-success w-100 mt-3">
                         Confirmar Entrada

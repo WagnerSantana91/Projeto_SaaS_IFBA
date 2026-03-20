@@ -23,22 +23,22 @@ def criar_quarto(request):
 
 
 @login_required
-def editar_quarto(request, id):#will:
+def editar_quarto(request, id):      
 
-    cliente = get_object_or_404(Quarto, id=id)#will:
+    cliente = get_object_or_404(Quarto, id=id)      
 
     if request.method == "POST":
-        form = QuartoForm(request.POST, instance=cliente)#will:
+        form = QuartoForm(request.POST, instance=cliente)      
 
         if form.is_valid():
             form.save()
-            return redirect("quartos:listar_quartos")#will:
+            return redirect("quartos:listar_quartos")      
 
     else:
-        form = QuartoForm(instance=cliente)#will:
+        form = QuartoForm(instance=cliente)      
 
     return render(request, "quartos/editar.html", {
-        "form": form#will:
+        "form": form      
     })
 
 

@@ -23,22 +23,22 @@ def criar_funcionario(request):
 
 
 @login_required
-def editar_funcionario(request, id):#will:
+def editar_funcionario(request, id):   
 
-    funcionario = get_object_or_404(Funcionario, id=id)#will:
+    funcionario = get_object_or_404(Funcionario, id=id)   
 
     if request.method == "POST":
-        form = FuncionarioForm(request.POST, instance=funcionario)#will:
+        form = FuncionarioForm(request.POST, instance=funcionario)   
 
         if form.is_valid():
             form.save()
-            return redirect("funcionarios:listar_funcionarios")#will:
+            return redirect("funcionarios:listar_funcionarios")   
 
     else:
-        form = FuncionarioForm(instance=funcionario)#will:
+        form = FuncionarioForm(instance=funcionario)   
 
     return render(request, "funcionarios/editar.html", {
-        "form": form#will:
+        "form": form   
     })
 
 

@@ -200,3 +200,44 @@ body:has(#sidebar.collapsed) #content{
 .card:hover {
     transform: scale(1.03);
 }
+/* MÓDULO FINANCEIRO - ADICIONADO RECENTEMENTE */
+.card-financeiro {  /* ADICIONADO RECENTEMENTE */
+    border-radius: 10px;  /* ADICIONADO RECENTEMENTE */
+    padding: 5px;  /* ADICIONADO RECENTEMENTE */
+    transition: transform 0.2s;  /* ADICIONADO RECENTEMENTE */
+    background-color: #ffffff;  /* ADICIONADO RECENTEMENTE */
+    color: #111827;  /* ADICIONADO RECENTEMENTE — texto preto em todos os cards */
+}  /* ADICIONADO RECENTEMENTE */
+
+.card-financeiro:hover {  /* ADICIONADO RECENTEMENTE */
+    transform: scale(1.03);  /* ADICIONADO RECENTEMENTE */
+}  /* ADICIONADO RECENTEMENTE */
+
+.card-financeiro.entrada {  /* ALTERADO RECENTEMENTE — borda verde no lugar de fundo verde para manter texto legível */
+    border-left: 5px solid #16a34a;  /* ALTERADO RECENTEMENTE */
+    background-color: #f0fdf4;  /* ALTERADO RECENTEMENTE — fundo verde bem claro */
+}  /* ALTERADO RECENTEMENTE */
+
+.card-financeiro.saida {  /* ALTERADO RECENTEMENTE — borda vermelha no lugar de fundo vermelho */
+    border-left: 5px solid #dc2626;  /* ALTERADO RECENTEMENTE */
+    background-color: #fef2f2;  /* ALTERADO RECENTEMENTE — fundo vermelho bem claro */
+}  /* ALTERADO RECENTEMENTE */
+
+.card-financeiro.bg-secondary {  /* ADICIONADO RECENTEMENTE — card de atendimentos com texto preto */
+    background-color: #f1f5f9 !important;  /* ADICIONADO RECENTEMENTE */
+    border-left: 5px solid #64748b;  /* ADICIONADO RECENTEMENTE */
+    color: #111827 !important;  /* ADICIONADO RECENTEMENTE */
+}  /* ADICIONADO RECENTEMENTE */
+
+/* CLIENTES - ADICIONADO RECENTEMENTE */
+.table td {
+    vertical-align: middle;
+}
+.list-unstyled li {
+    font-size: 0.9rem;
+    border-bottom: 1px solid #eee;
+    padding: 2px 0;
+}
+.list-unstyled li:last-child {
+    border-bottom: none;
+}

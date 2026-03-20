@@ -69,3 +69,21 @@ def excluir_cliente(request, id):
     veiculo = get_object_or_404(Veiculo, id=id)
     veiculo.delete()
     return redirect('clientes:listar_clientes')
+
+
+from django.http import JsonResponse       
+
+@login_required       
+def buscar_veiculo(request):       
+    placa = request.GET.get('placa', '').replace('-', '').replace(' ', '').upper()       
+    try:       
+        veiculo = Veiculo.objects.get(placa=placa)       
+        cliente = veiculo.pessoas.first()       
+        return JsonResponse({       
+            'existe': True,       
+            'modelo': veiculo.modelo,       
+            'cor': veiculo.get_cor_display(),       
+            'nome_cliente': cliente.nome if cliente else '',       
+        })       
+    except Veiculo.DoesNotExist:       
+        return JsonResponse({'existe': False})       
