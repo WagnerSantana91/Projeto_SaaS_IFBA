@@ -7,6 +7,42 @@ from .models import Reserva, Pessoa
 from apps.core.email_utils import enviar_email_notificacao
 from decimal import Decimal
 
+
+def _normalizar_modo_conducao(raw_value):
+    valor = (raw_value or '').strip().lower()
+
+    mapa_reserva = {
+        'proprio': 'carro',
+        'carro': 'carro',
+        'moto': 'moto',
+        'ape': 'ape',
+        'a_pe': 'ape',
+        '2_carros': '2_carros',
+        'taxi': 'taxi',
+        'uber': 'uber',
+        'uber_moto': 'uber_moto',
+        'moto-uber': 'uber_moto',
+    }
+
+    mapa_veiculo = {
+        'proprio': 'proprio',
+        'carro': 'proprio',
+        'moto': 'proprio',
+        '2_carros': 'proprio',
+        'taxi': 'taxi',
+        'uber': 'uber',
+        'uber_moto': 'moto-uber',
+        'moto-uber': 'moto-uber',
+        'ape': 'a_pe',
+        'a_pe': 'a_pe',
+    }
+
+    return {
+        'reserva': mapa_reserva.get(valor, 'carro'),
+        'veiculo': mapa_veiculo.get(valor, 'proprio'),
+    }
+
+
 @login_required
 def criar_reserva(request, quarto_id):
     if request.method == "POST":
@@ -31,7 +67,8 @@ def criar_reserva(request, quarto_id):
 
                
         
-        placa_normalizada = (request.POST.get('placa') or '').replace('-', '').replace(' ', '').upper()        
+        placa_normalizada = (request.POST.get('placa') or '').replace('-', '').replace(' ', '').upper()
+        modo_conducao = _normalizar_modo_conducao(request.POST.get('modo_conducao'))
         veiculo, veiculo_criado = Veiculo.objects.get_or_create(        
             placa=placa_normalizada,        
             defaults={        
@@ -39,7 +76,7 @@ def criar_reserva(request, quarto_id):
                 'cor_personalizada': request.POST.get('cor_personalizada'),        
                 'modelo': request.POST.get('modelo') or '',        
                 'imagem': request.FILES.get('imagem'),        
-                'modo_conducao': request.POST.get('modo_conducao') or 'proprio',        
+                'modo_conducao': modo_conducao['veiculo'],        
             }        
         )        
 
@@ -67,7 +104,7 @@ def criar_reserva(request, quarto_id):
         reserva = Reserva.objects.create(
             cliente=cliente,
             quarto_id=quarto_id,
-            modo_conducao=request.POST.get('modo_conducao'),
+            modo_conducao=modo_conducao['reserva'],
             veiculo_principal=veiculo
         )
         if quarto_obj.status != 'ocupado':
@@ -107,7 +144,7 @@ def criar_reserva(request, quarto_id):
             ),
         )
 
-        return redirect('quartos:dashboard')
+        return redirect('quartos:dashboard_quartos')
 
     return render(request, 'reservas/modal.html')
 
